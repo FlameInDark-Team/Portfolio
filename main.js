@@ -45,30 +45,57 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// // Form Submission
+// const contactForm = document.getElementById('contact-form');
+
+// contactForm?.addEventListener('submit', async (e) => {
+//     e.preventDefault();
+//     const formData = new FormData(contactForm);
+//     const data = Object.fromEntries(formData);
+
+//     // Add your form submission logic here
+//     // For example, sending to an API endpoint
+//     try {
+//         // Simulate form submission
+//         await new Promise(resolve => setTimeout(resolve, 1000));
+//         alert('Message sent successfully!');
+//         contactForm.reset();
+//     } catch (error) {
+//         alert('Error sending message. Please try again.');
+//     }
+// });
+
+// // Intersection Observer for Animations
+// const observerOptions = {
+//     threshold: 0.1
+// };
+
 // Form Submission
 const contactForm = document.getElementById('contact-form');
 
 contactForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    
     const formData = new FormData(contactForm);
     const data = Object.fromEntries(formData);
+    
+    // Initialize EmailJS (replace with your Public Key)
+    emailjs.init("H0sxjJf51HC7stcqd");
 
-    // Add your form submission logic here
-    // For example, sending to an API endpoint
     try {
-        // Simulate form submission
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        alert('Message sent successfully!');
+        await emailjs.send("service_odwmtxo", "template_mkxb5dd", {
+            user_name: data.name, // Replace with your form field names
+            user_email: data.email,
+            message: data.message
+        });
+
+        alert("Message sent successfully!");
         contactForm.reset();
     } catch (error) {
-        alert('Error sending message. Please try again.');
+        alert("Error sending message. Please try again.");
+        console.error("EmailJS Error:", error);
     }
 });
-
-// Intersection Observer for Animations
-const observerOptions = {
-    threshold: 0.1
-};
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
